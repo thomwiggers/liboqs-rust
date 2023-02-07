@@ -58,13 +58,13 @@ macro_rules! implement_sigs {
 
                 #[test]
                 #[cfg(feature = $feat)]
-                fn test_signing() -> Result<()> {
+                fn test_signing() {
                     crate::init();
                     let message = [0u8; 100];
-                    let sig = Sig::new(Algorithm::$sig)?;
-                    let (pk, sk) = sig.keypair()?;
-                    let signature = sig.sign(&message, &sk)?;
-                    sig.verify(&message, &signature, &pk)
+                    let sig = Sig::new(Algorithm::$sig).expect("construction of alg failed");
+                    let (pk, sk) = sig.keypair().expect("Keygen failed");
+                    let signature = sig.sign(&message, &sk).expect("Signing failed");
+                    sig.verify(&message, &signature, &pk).expect("Verify failed");
                 }
 
                 #[test]
@@ -131,30 +131,34 @@ implement_sigs! {
     ("sphincs") SphincsHaraka256fSimple: OQS_SIG_alg_sphincs_haraka_256f_simple,
     ("sphincs") SphincsHaraka256sRobust: OQS_SIG_alg_sphincs_haraka_256s_robust,
     ("sphincs") SphincsHaraka256sSimple: OQS_SIG_alg_sphincs_haraka_256s_simple,
-    ("sphincs") SphincsSha256128fRobust: OQS_SIG_alg_sphincs_sha256_128f_robust,
-    ("sphincs") SphincsSha256128fSimple: OQS_SIG_alg_sphincs_sha256_128f_simple,
-    ("sphincs") SphincsSha256128sRobust: OQS_SIG_alg_sphincs_sha256_128s_robust,
-    ("sphincs") SphincsSha256128sSimple: OQS_SIG_alg_sphincs_sha256_128s_simple,
-    ("sphincs") SphincsSha256192fRobust: OQS_SIG_alg_sphincs_sha256_192f_robust,
-    ("sphincs") SphincsSha256192fSimple: OQS_SIG_alg_sphincs_sha256_192f_simple,
-    ("sphincs") SphincsSha256192sRobust: OQS_SIG_alg_sphincs_sha256_192s_robust,
-    ("sphincs") SphincsSha256192sSimple: OQS_SIG_alg_sphincs_sha256_192s_simple,
-    ("sphincs") SphincsSha256256fRobust: OQS_SIG_alg_sphincs_sha256_256f_robust,
-    ("sphincs") SphincsSha256256fSimple: OQS_SIG_alg_sphincs_sha256_256f_simple,
-    ("sphincs") SphincsSha256256sRobust: OQS_SIG_alg_sphincs_sha256_256s_robust,
-    ("sphincs") SphincsSha256256sSimple: OQS_SIG_alg_sphincs_sha256_256s_simple,
-    ("sphincs") SphincsShake256128fRobust: OQS_SIG_alg_sphincs_shake256_128f_robust,
-    ("sphincs") SphincsShake256128fSimple: OQS_SIG_alg_sphincs_shake256_128f_simple,
-    ("sphincs") SphincsShake256128sRobust: OQS_SIG_alg_sphincs_shake256_128s_robust,
-    ("sphincs") SphincsShake256128sSimple: OQS_SIG_alg_sphincs_shake256_128s_simple,
-    ("sphincs") SphincsShake256192fRobust: OQS_SIG_alg_sphincs_shake256_192f_robust,
-    ("sphincs") SphincsShake256192fSimple: OQS_SIG_alg_sphincs_shake256_192f_simple,
-    ("sphincs") SphincsShake256192sRobust: OQS_SIG_alg_sphincs_shake256_192s_robust,
-    ("sphincs") SphincsShake256192sSimple: OQS_SIG_alg_sphincs_shake256_192s_simple,
-    ("sphincs") SphincsShake256256fRobust: OQS_SIG_alg_sphincs_shake256_256f_robust,
-    ("sphincs") SphincsShake256256fSimple: OQS_SIG_alg_sphincs_shake256_256f_simple,
-    ("sphincs") SphincsShake256256sRobust: OQS_SIG_alg_sphincs_shake256_256s_robust,
-    ("sphincs") SphincsShake256256sSimple: OQS_SIG_alg_sphincs_shake256_256s_simple,
+    ("sphincs") SphincsSha2128fRobust: OQS_SIG_alg_sphincs_sha2_128f_robust,
+    ("sphincs") SphincsSha2128fSimple: OQS_SIG_alg_sphincs_sha2_128f_simple,
+    ("sphincs") SphincsSha2128sRobust: OQS_SIG_alg_sphincs_sha2_128s_robust,
+    ("sphincs") SphincsSha2128sSimple: OQS_SIG_alg_sphincs_sha2_128s_simple,
+    ("sphincs") SphincsSha2192fRobust: OQS_SIG_alg_sphincs_sha2_192f_robust,
+    ("sphincs") SphincsSha2192fSimple: OQS_SIG_alg_sphincs_sha2_192f_simple,
+    ("sphincs") SphincsSha2192sRobust: OQS_SIG_alg_sphincs_sha2_192s_robust,
+    ("sphincs") SphincsSha2192sSimple: OQS_SIG_alg_sphincs_sha2_192s_simple,
+    ("sphincs") SphincsSha2256fRobust: OQS_SIG_alg_sphincs_sha2_256f_robust,
+    ("sphincs") SphincsSha2256fSimple: OQS_SIG_alg_sphincs_sha2_256f_simple,
+    ("sphincs") SphincsSha2256sRobust: OQS_SIG_alg_sphincs_sha2_256s_robust,
+    ("sphincs") SphincsSha2256sSimple: OQS_SIG_alg_sphincs_sha2_256s_simple,
+    ("sphincs") SphincsShake128fRobust: OQS_SIG_alg_sphincs_shake_128f_robust,
+    ("sphincs") SphincsShake128fSimple: OQS_SIG_alg_sphincs_shake_128f_simple,
+    ("sphincs") SphincsShake128sRobust: OQS_SIG_alg_sphincs_shake_128s_robust,
+    ("sphincs") SphincsShake128sSimple: OQS_SIG_alg_sphincs_shake_128s_simple,
+    ("sphincs") SphincsShake192fRobust: OQS_SIG_alg_sphincs_shake_192f_robust,
+    ("sphincs") SphincsShake192fSimple: OQS_SIG_alg_sphincs_shake_192f_simple,
+    ("sphincs") SphincsShake192sRobust: OQS_SIG_alg_sphincs_shake_192s_robust,
+    ("sphincs") SphincsShake192sSimple: OQS_SIG_alg_sphincs_shake_192s_simple,
+    ("sphincs") SphincsShake256fRobust: OQS_SIG_alg_sphincs_shake_256f_robust,
+    ("sphincs") SphincsShake256fSimple: OQS_SIG_alg_sphincs_shake_256f_simple,
+    ("sphincs") SphincsShake256sRobust: OQS_SIG_alg_sphincs_shake_256s_robust,
+    ("sphincs") SphincsShake256sSimple: OQS_SIG_alg_sphincs_shake_256s_simple,
+    ("pqov") Pqov1616064Classic: OQS_SIG_alg_pqov_16_160_64_classic,
+    ("pqov") Pqov25611244Classic: OQS_SIG_alg_pqov_256_112_44_classic,
+    ("pqov") Pqov25618472Classic: OQS_SIG_alg_pqov_256_184_72_classic,
+    ("pqov") Pqov25624496Classic: OQS_SIG_alg_pqov_256_244_96_classic,
 }
 
 impl Algorithm {

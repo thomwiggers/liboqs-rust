@@ -41,19 +41,19 @@ fn main() {
 
     let mut config = cmake::Config::new("liboqs");
     config.profile("Release");
-    config.define("OQS_BUILD_ONLY_LIB", "Yes");
+    config.define("OQS_BUILD_ONLY_LIB", "ON");
 
     if cfg!(feature = "non_portable") {
         // Build with CPU feature detection or just enable whatever is available for this CPU
-        config.define("OQS_DIST_BUILD", "No");
+        config.define("OQS_DIST_BUILD", "OFF");
     } else {
-        config.define("OQS_DIST_BUILD", "Yes");
+        config.define("OQS_DIST_BUILD", "ON");
     }
 
     macro_rules! algorithm_feature {
         ($typ:literal, $feat: literal) => {
             let configflag = format!("OQS_ENABLE_{}_{}", $typ, $feat.to_ascii_uppercase());
-            let value = if cfg!(feature = $feat) { "Yes" } else { "No" };
+            let value = if cfg!(feature = $feat) { "ON" } else { "OFF" };
             config.define(&configflag, value);
         };
     }
@@ -63,7 +63,7 @@ fn main() {
     // have it be opt-in explicitly except through the default kems feature.
     if cfg!(feature = "kems") && !(cfg!(windows) || cfg!(target_arch = "arm")) {
         println!("cargo:rustc-cfg=feature=\"bike\"");
-        config.define("OQS_ENABLE_KEM_BIKE", "Yes");
+        config.define("OQS_ENABLE_KEM_BIKE", "ON");
     } else {
         algorithm_feature!("KEM", "bike");
     }
@@ -71,11 +71,15 @@ fn main() {
     algorithm_feature!("KEM", "frodokem");
     algorithm_feature!("KEM", "hqc");
     algorithm_feature!("KEM", "kyber");
+    algorithm_feature!("KEM", "ntruprime");
+    algorithm_feature!("KEM", "sike");
+    algorithm_feature!("KEM", "sidh");
 
     // signature schemes
     algorithm_feature!("SIG", "dilithium");
     algorithm_feature!("SIG", "falcon");
     algorithm_feature!("SIG", "sphincs");
+    algorithm_feature!("SIG", "pqov");
 
     if cfg!(windows) {
         // Select the latest available Windows SDK
