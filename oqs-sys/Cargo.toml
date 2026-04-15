@@ -1,6 +1,6 @@
 [package]
 name = "oqs-sys"
-version = "0.11.0+liboqs-0.13.0"
+version = "0.11.0+liboqs-0.15.0"
 authors = ["Thom Wiggers <thom@thomwiggers.nl>"]
 edition = "2021"
 links = "oqs"
@@ -10,7 +10,15 @@ repository = "https://github.com/open-quantum-safe/liboqs-rust"
 license = "MIT OR Apache-2.0"
 
 # Exclude certain liboqs files
-include = ["README.md", "build.rs", "src/**", "liboqs/.CMake/**", "liboqs/src/**", "liboqs/tests/**", "liboqs/*.txt"]
+include = [
+  "README.md",
+  "build.rs",
+  "src/**",
+  "liboqs/.CMake/**",
+  "liboqs/src/**",
+  "liboqs/tests/**",
+  "liboqs/*.txt",
+]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -33,7 +41,7 @@ non_portable = []
 vendored = []
 # algorithms: KEMs
 kems = ["classic_mceliece", "frodokem", "hqc", "kyber", "ml_kem", "ntruprime"]
-bike = []  # BIKE is enabled by build.rs on non-windows targets
+bike = []                                                                      # BIKE is enabled by build.rs on non-windows targets
 classic_mceliece = []
 frodokem = []
 hqc = []
